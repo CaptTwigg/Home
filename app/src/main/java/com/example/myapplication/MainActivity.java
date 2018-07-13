@@ -14,6 +14,7 @@ public class MainActivity extends Activity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     textView = findViewById(R.id.textView0);
+
     Database database = new Database();
     database.execute((Object) null);
     try {
@@ -25,5 +26,6 @@ public class MainActivity extends Activity {
     }
 
   }
+
 }
 

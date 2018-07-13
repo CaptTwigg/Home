@@ -39,9 +39,9 @@ public class Database extends AsyncTask {
       }
 
       in.close();
-      System.out.println(json("[{\"temperature\":\"28.12\",\"date\":\"2018-07-12 20:51:07\"}]"));
-      //System.out.println("page result: " + json(sb.toString()));
-      return sb.toString();
+      //System.out.println(json("[{\"temperature\":\"28.12\",\"date\":\"2018-07-12 20:51:07\"}]"));
+      System.out.println("page result: " + json(sb.toString()));
+      return json(sb.toString());
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -49,15 +49,22 @@ public class Database extends AsyncTask {
   }
   private String json(String json){
     JSONArray obj = null;
+    String result = "";
     try {
       obj = new JSONArray(json);
-      JSONObject jsonObject  = obj.getJSONObject(0);
-      return  jsonObject.get("date").toString();
+      for(int i =0; i < obj.length(); i++){
+        JSONObject jsonObject  = obj.getJSONObject(i);
+        result += String.format("Date: %s \t Temperature: %s \n", jsonObject.get("date").toString(), jsonObject.get("temperature").toString()) ;
+
+      }
+      return  result;
 
     } catch (JSONException e) {
       e.printStackTrace();
     }
     return null;
   }
+
+
 }
 
