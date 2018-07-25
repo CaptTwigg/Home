@@ -7,8 +7,6 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -18,9 +16,9 @@ import java.net.URL;
 public class Database extends AsyncTask {
 
   @Override
-  protected String doInBackground(Object[] objects) {
+  protected JSONArray doInBackground(Object[] objects) {
 
-    String link = "http://mike.familien-jahn.dk/test/";
+    String link = "http://mike.familien-jahn.dk/hometemp/";
 
     try {
       URL url = new URL(link);
@@ -30,8 +28,8 @@ public class Database extends AsyncTask {
       HttpResponse response = client.execute(request);
       BufferedReader in = new BufferedReader(new
         InputStreamReader(response.getEntity().getContent()));
-      StringBuffer sb = new StringBuffer("");
-      String line = "";
+      StringBuilder sb = new StringBuilder("");
+      String line;
 
       while ((line = in.readLine()) != null) {
         sb.append(line);
@@ -39,32 +37,13 @@ public class Database extends AsyncTask {
       }
 
       in.close();
-      //System.out.println(json("[{\"temperature\":\"28.12\",\"date\":\"2018-07-12 20:51:07\"}]"));
-      System.out.println("page result: " + json(sb.toString()));
-      return json(sb.toString());
+
+      System.out.println("page result: " + new JSONArray(sb.toString()));
+      return new JSONArray(sb.toString());
     } catch (Exception e) {
-      e.printStackTrace();
-    }
-    return "null";
-  }
-  private String json(String json){
-    JSONArray obj = null;
-    String result = "";
-    try {
-      obj = new JSONArray(json);
-      for(int i =0; i < obj.length(); i++){
-        JSONObject jsonObject  = obj.getJSONObject(i);
-        result += String.format("Date: %s \t Temperature: %s \n", jsonObject.get("date").toString(), jsonObject.get("temperature").toString()) ;
-
-      }
-      return  result;
-
-    } catch (JSONException e) {
       e.printStackTrace();
     }
     return null;
   }
-
-
 }
 
